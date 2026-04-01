@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<!-- saved from url=(0054)file:///C:/Users/dave7/Downloads/pool_dashboard_1.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pool HQ — David</title>
+<link href="./Pool HQ — David_files/css2" rel="stylesheet">
+<style>
+  :root{--bg:#0a1628;--surface:#0f2040;--surface2:#152a52;--border:rgba(100,180,255,0.12);--text:#e8f4ff;--muted:#7aaed4;--accent:#00c9a7;--accent2:#4da6ff;--danger:#ff6b6b;--warn:#ffd166;--font-display:'Fraunces',serif;--font-mono:'DM Mono',monospace}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--text);font-family:var(--font-mono);min-height:100vh;overflow-x:hidden}
+  body::before{content:'';position:fixed;top:-30%;left:-10%;width:60%;height:60%;background:radial-gradient(ellipse,rgba(0,201,167,.06) 0%,transparent 70%);pointer-events:none}
+  body::after{content:'';position:fixed;bottom:-20%;right:-10%;width:50%;height:50%;background:radial-gradient(ellipse,rgba(77,166,255,.05) 0%,transparent 70%);pointer-events:none}
+  .container{max-width:1100px;margin:0 auto;padding:2.5rem 2rem 4rem}
+  header{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:2rem;padding-bottom:1.5rem;border-bottom:1px solid var(--border);flex-wrap:wrap;gap:1rem}
+  .header-title{font-family:var(--font-display);font-size:2.8rem;font-weight:300;line-height:1}
+  .header-title em{font-style:italic;color:var(--accent)}
+  .header-sub{font-size:.75rem;color:var(--muted);margin-top:.4rem;letter-spacing:.08em;text-transform:uppercase}
+  .header-specs{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+  .spec-pill{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:5px 12px;font-size:.7rem;color:var(--muted)}
+  .spec-pill strong{color:var(--accent2);font-weight:500}
+  .savings-banner{background:linear-gradient(135deg,rgba(0,201,167,.12),rgba(77,166,255,.08));border:1px solid rgba(0,201,167,.25);border-radius:12px;padding:1.25rem 1.75rem;display:flex;align-items:center;justify-content:space-between;margin-bottom:2rem;gap:1rem;flex-wrap:wrap}
+  .savings-num{font-family:var(--font-display);font-size:3rem;font-weight:600;color:var(--accent);line-height:1}
+  .savings-label{font-size:.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:.07em}
+  .savings-details{display:flex;gap:2rem;flex-wrap:wrap}
+  .sstat-val{font-size:1.4rem;font-weight:500}
+  .sstat-lbl{font-size:.68rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-top:2px}
+  .bar-wrap{flex:1;min-width:160px;max-width:200px}
+  .bar-label{font-size:.7rem;color:var(--muted);margin-bottom:5px;display:flex;justify-content:space-between}
+  .bar-track{height:6px;background:rgba(255,255,255,.08);border-radius:3px;overflow:hidden}
+  .bar-fill{height:100%;width:82%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:3px;animation:barGrow 1.2s ease-out}
+  @keyframes barGrow{from{width:0}to{width:82%}}
+  .section-label{font-size:.68rem;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);margin-bottom:.85rem;display:flex;align-items:center;gap:.5rem}
+  .section-label::after{content:'';flex:1;height:1px;background:var(--border)}
+  .stats-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:2rem}
+  .stat-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:1rem 1.1rem}
+  .stat-label{font-size:.65rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px}
+  .stat-val{font-size:1.6rem;font-weight:500;line-height:1}
+  .stat-unit{font-size:.7rem;color:var(--muted);margin-top:2px}
+  .tabs{display:flex;gap:4px;margin-bottom:1.25rem;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:4px;flex-wrap:wrap}
+  .tab-btn{padding:7px 14px;border-radius:7px;font-family:var(--font-mono);font-size:.7rem;cursor:pointer;border:none;background:transparent;color:var(--muted);letter-spacing:.05em;transition:all .2s;white-space:nowrap}
+  .tab-btn.active{background:var(--surface2);color:var(--accent2);border:1px solid rgba(77,166,255,.2)}
+  .tab-btn:hover:not(.active){color:var(--text)}
+  .panel{display:none}
+  .panel.active{display:block}
+  .schedule-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+  .sched-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:1rem 1.1rem;transition:border-color .2s}
+  .sched-card:hover{border-color:rgba(77,166,255,.3)}
+  .sched-freq{font-size:.62rem;font-weight:500;text-transform:uppercase;letter-spacing:.1em;color:var(--accent);margin-bottom:5px}
+  .sched-freq.amber{color:var(--warn)}.sched-freq.blue{color:var(--accent2)}.sched-freq.red{color:var(--danger)}
+  .sched-task{font-size:.9rem;font-weight:500;margin-bottom:4px}
+  .sched-note{font-size:.72rem;color:var(--muted);line-height:1.5}
+  .dose-badge{display:inline-block;background:rgba(0,201,167,.15);color:var(--accent);border:1px solid rgba(0,201,167,.25);border-radius:4px;font-size:.65rem;padding:2px 7px;margin-top:5px;font-weight:500}
+  .supply-table{width:100%;border-collapse:collapse}
+  .supply-table th{font-size:.62rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);text-align:left;padding:0 1rem .6rem;border-bottom:1px solid var(--border)}
+  .supply-table th:last-child{text-align:right}
+  .supply-table td{padding:.85rem 1rem;border-bottom:1px solid var(--border);font-size:.78rem;vertical-align:top}
+  .supply-table tr:last-child td{border-bottom:none}
+  .supply-table tr:hover td{background:rgba(77,166,255,.03)}
+  .sname{font-weight:500;margin-bottom:2px}
+  .sdetail{color:var(--muted);font-size:.7rem;line-height:1.4}
+  .slink{color:var(--accent2);text-decoration:none;font-size:.68rem;margin-top:3px;display:inline-block}
+  .slink:hover{text-decoration:underline}
+  .scost{text-align:right}
+  .badge{display:inline-block;font-size:.58rem;padding:2px 7px;border-radius:20px;font-weight:500;text-transform:uppercase;letter-spacing:.06em;margin-left:5px;vertical-align:middle}
+  .bs{background:rgba(77,166,255,.15);color:var(--accent2);border:1px solid rgba(77,166,255,.25)}
+  .bo{background:rgba(255,209,102,.15);color:var(--warn);border:1px solid rgba(255,209,102,.25)}
+  .bg{background:rgba(0,201,167,.15);color:var(--accent);border:1px solid rgba(0,201,167,.25)}
+  .two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .s-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:1.25rem 1.5rem}
+  .s-card-title{font-size:.68rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:1rem}
+  .s-row{display:flex;justify-content:space-between;font-size:.78rem;padding:4px 0}
+  .s-total{display:flex;justify-content:space-between;font-size:.88rem;padding-top:10px;margin-top:8px;border-top:1px solid var(--border);font-weight:500}
+  .savings-hl{background:linear-gradient(135deg,rgba(0,201,167,.1),rgba(77,166,255,.06));border:1px solid rgba(0,201,167,.2);border-radius:10px;padding:1.25rem 1.5rem;margin-top:14px;display:flex;align-items:baseline;justify-content:space-between;flex-wrap:wrap;gap:1rem}
+  .sh-val{font-family:var(--font-display);font-size:2rem;font-weight:600;color:var(--accent)}
+  .addon-row{display:grid;grid-template-columns:1fr auto auto auto;gap:8px;align-items:center;font-size:.75rem;padding:6px 0;border-bottom:1px solid var(--border)}
+  .addon-row:last-child{border-bottom:none}
+  .usage-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-bottom:1.5rem}
+  .usage-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:1.25rem}
+  .usage-title{font-size:.68rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:1rem}
+  .month-row{display:grid;grid-template-columns:70px 1fr 45px;align-items:center;gap:8px;font-size:.72rem;margin-bottom:6px}
+  .month-name{color:var(--muted)}
+  .month-track{height:8px;background:rgba(255,255,255,.06);border-radius:4px;overflow:hidden}
+  .month-bar{height:100%;border-radius:4px}
+  .month-val{color:var(--text);text-align:right;font-size:.7rem}
+  .season-note{font-size:.72rem;color:var(--muted);margin-top:.75rem;padding:.6rem .75rem;background:rgba(77,166,255,.06);border-radius:6px;border-left:2px solid var(--accent2);line-height:1.5}
+  .equip-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+  .equip-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:1.1rem 1.25rem}
+  .equip-type{font-size:.6rem;text-transform:uppercase;letter-spacing:.12em;color:var(--accent);margin-bottom:4px;font-weight:500}
+  .equip-name{font-size:.95rem;font-weight:500;margin-bottom:2px}
+  .equip-model{font-size:.72rem;color:var(--accent2);margin-bottom:6px}
+  .equip-detail{font-size:.72rem;color:var(--muted);line-height:1.6}
+  .equip-link{color:var(--accent2);text-decoration:none;font-size:.68rem;margin-top:5px;display:inline-block}
+  .equip-link:hover{text-decoration:underline}
+  .equip-tip{margin-top:.65rem;padding:.5rem .75rem;background:rgba(0,201,167,.06);border-radius:6px;border-left:2px solid var(--accent);font-size:.7rem;color:var(--muted);line-height:1.5}
+  .equip-tip strong{color:var(--text)}
+  .pt-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+  .pt-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:1.1rem 1.25rem}
+  .pt-label{font-size:.6rem;text-transform:uppercase;letter-spacing:.12em;color:var(--warn);margin-bottom:5px;font-weight:500}
+  .pt-title{font-size:.9rem;font-weight:500;margin-bottom:5px}
+  .pt-text{font-size:.73rem;color:var(--muted);line-height:1.65}
+  .pt-text strong{color:var(--text)}
+  .pt-warn{background:rgba(255,107,107,.08);border:1px solid rgba(255,107,107,.2);border-radius:8px;padding:.85rem 1rem;margin-bottom:1rem;font-size:.75rem;color:var(--danger);line-height:1.6}
+  .info-bar{margin-top:1rem;padding:1rem 1.25rem;background:var(--surface);border:1px solid var(--border);border-radius:10px;font-size:.75rem;color:var(--muted);line-height:1.6}
+  .info-bar strong{color:var(--text)}
+  .info-bar a{color:var(--accent2)}
+  footer{margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border);display:flex;justify-content:space-between;font-size:.68rem;color:var(--muted)}
+  @media(max-width:700px){.stats-grid,.equip-grid,.two-col,.usage-grid,.pt-grid{grid-template-columns:1fr}.schedule-grid{grid-template-columns:1fr}.savings-banner{flex-direction:column}.header-title{font-size:2rem}.tabs{width:100%}}
+</style>
+</head>
+<body>
+<div class="container">
+
+<header>
+  <div>
+    <div class="header-title">Pool <em>HQ</em></div>
+    <div class="header-sub">DIY Service Dashboard · Pebble Tec · Jandy System</div>
+  </div>
+  <div class="header-specs">
+    <div class="spec-pill"><strong>17,000</strong> gal</div>
+    <div class="spec-pill"><strong>466</strong> sq ft</div>
+    <div class="spec-pill">31.5 × 20.5 ft</div>
+    <div class="spec-pill">avg <strong>4.9 ft</strong></div>
+    <div class="spec-pill">Pebble Tec surface</div>
+  </div>
+</header>
+
+<div class="savings-banner">
+  <div>
+    <div class="savings-label">Annual savings vs pro service</div>
+    <div style="display:flex;align-items:baseline;gap:.5rem">
+      <div class="savings-num">$1,434</div>
+      <div>
+        <div style="font-size:.75rem;color:var(--muted)">per year</div>
+        <div style="font-size:.7rem;color:var(--accent);margin-top:2px">$120/month back</div>
+      </div>
+    </div>
+  </div>
+  <div class="savings-details">
+    <div><div class="sstat-val" style="color:var(--danger)">$1,740</div><div class="sstat-lbl">Pro service/yr</div></div>
+    <div><div class="sstat-val" style="color:var(--accent)">$306</div><div class="sstat-lbl">DIY cost/yr</div></div>
+  </div>
+  <div class="bar-wrap">
+    <div class="bar-label"><span>Cost reduction</span><span>82%</span></div>
+    <div class="bar-track"><div class="bar-fill"></div></div>
+  </div>
+</div>
+
+<div class="section-label">pool specs</div>
+<div class="stats-grid">
+  <div class="stat-card"><div class="stat-label">Volume</div><div class="stat-val">17,000</div><div class="stat-unit">gallons</div></div>
+  <div class="stat-card"><div class="stat-label">Surface</div><div class="stat-val">466</div><div class="stat-unit">sq ft</div></div>
+  <div class="stat-card"><div class="stat-label">Avg Depth</div><div class="stat-val">4.9</div><div class="stat-unit">ft</div></div>
+  <div class="stat-card"><div class="stat-label">Perimeter</div><div class="stat-val">88</div><div class="stat-unit">ft</div></div>
+</div>
+
+<div class="tabs">
+  <button class="tab-btn" onclick="showTab(&#39;schedule&#39;,this)">Schedule</button>
+  <button class="tab-btn" onclick="showTab(&#39;chemical&#39;,this)">Chemical Usage</button>
+  <button class="tab-btn" onclick="showTab(&#39;supplies&#39;,this)">Supplies</button>
+  <button class="tab-btn" onclick="showTab(&#39;equipment&#39;,this)">Equipment</button>
+  <button class="tab-btn active" onclick="showTab(&#39;pebbletec&#39;,this)">Pebble Tec</button>
+  <button class="tab-btn" onclick="showTab(&#39;savings&#39;,this)">Savings</button>
+</div>
+
+<!-- SCHEDULE -->
+<div id="panel-schedule" class="panel">
+  <div class="schedule-grid">
+    <div class="sched-card">
+      <div class="sched-freq">Weekly</div>
+      <div class="sched-task">Test &amp; dose chlorine</div>
+      <div class="sched-note">Target 1–3 ppm (Pebble Tec rec). Use Taylor K-2006 FAS-DPD — more accurate than strips.</div>
+      <div class="dose-badge">Winter ~0.25 gal · Summer ~0.75–1.5 gal</div>
+    </div>
+    <div class="sched-card">
+      <div class="sched-freq">Weekly</div>
+      <div class="sched-task">Test &amp; adjust pH</div>
+      <div class="sched-note">Target 7.4–7.6. Your pool runs 7.6–8.0 — you'll add muriatic acid nearly every visit.</div>
+      <div class="dose-badge">~0.25–0.31 gal every visit</div>
+    </div>
+    <div class="sched-card">
+      <div class="sched-freq">Weekly</div>
+      <div class="sched-task">Brush Pebble Tec surface</div>
+      <div class="sched-note">Nylon brush ONLY — never stainless steel. Brush walls + floor toward main drain. Prevents algae in the textured surface.</div>
+      <div class="dose-badge">Nylon bristle only</div>
+    </div>
+    <div class="sched-card">
+      <div class="sched-freq blue">Weekly (May–Sept)</div>
+      <div class="sched-task">Trichlor tab in floater</div>
+      <div class="sched-note">1–2 tabs. Your data: tabs used almost exclusively in summer. Zero usage Oct–Apr.</div>
+    </div>
+    <div class="sched-card">
+      <div class="sched-freq amber">Monthly</div>
+      <div class="sched-task">Test alkalinity</div>
+      <div class="sched-note">Target 80–120 ppm. Your pool drops to 50–60 ppm regularly. Critical for Pebble Tec — low alk etches the cement matrix.</div>
+      <div class="dose-badge">1.5 lbs per 10k gal = +10 ppm</div>
+    </div>
+    <div class="sched-card">
+      <div class="sched-freq amber">Monthly</div>
+      <div class="sched-task">Scale inhibitor dose</div>
+      <div class="sched-note">Your Dec 2025 calcium hardness was 600 ppm — extremely high. Scale inhibitor prevents white calcium haze on Pebble Tec and the waterline ring.</div>
+    </div>
+    <div class="sched-card">
+      <div class="sched-freq amber">Every 3 months</div>
+      <div class="sched-task">Test CYA &amp; calcium hardness</div>
+      <div class="sched-note">CYA target 40–60 ppm (yours is 60–70, don't add more). Calcium hardness 200–400 ppm — vital for Pebble Tec longevity.</div>
+    </div>
+    <div class="sched-card">
+      <div class="sched-freq amber">Every 3–4 months</div>
+      <div class="sched-task">Clean filter cartridges</div>
+      <div class="sched-note">Jandy CL460 — clean when pressure is 8–10 psi above baseline. Rinse, soak overnight in filter cleaner, rinse. ~30 min. Saves $85/visit.</div>
+      <div class="dose-badge">Part # R0554600 (×4)</div>
+    </div>
+    <div class="sched-card">
+      <div class="sched-freq blue">Every 6 months (Apr &amp; Oct)</div>
+      <div class="sched-task">Mineral pack</div>
+      <div class="sched-note">6-month algae prevention. Critical for Pebble Tec's textured surface where algae gets a foothold. Don't skip.</div>
+    </div>
+    <div class="sched-card">
+      <div class="sched-freq blue">Every 1–2 years</div>
+      <div class="sched-task">Replace UV lamp</div>
+      <div class="sched-note">Paramount UV2 lamp loses effectiveness even if still lit. Installed 5/26/2022 — check condition and replace. This is why your chlorine stays low.</div>
+    </div>
+    <div class="sched-card">
+      <div class="sched-freq blue">Every 2–4 years</div>
+      <div class="sched-task">Acid wash (Pebble Tec)</div>
+      <div class="sched-note">Drain and acid wash to remove calcium buildup and algae staining. Pro job. Especially important with CA hard water. Budget ~$400–600.</div>
+    </div>
+    <div class="sched-card">
+      <div class="sched-freq red">As needed</div>
+      <div class="sched-task">Phosphate remover</div>
+      <div class="sched-note">~1×/year in fall per your service history. Only if chlorine won't hold despite dosing. Test phosphates first before buying.</div>
+    </div>
+  </div>
+</div>
+
+<!-- CHEMICAL USAGE -->
+<div id="panel-chemical" class="panel">
+  <div class="info-bar" style="margin-bottom:1rem">
+    Based on <strong>71 actual service visits</strong> from your records (Jul 2023–Mar 2026). Your <strong>Paramount UV2</strong> and inline chlorinator lower your demand vs a standard pool — these are YOUR real numbers, not generic estimates.
+  </div>
+  <div class="usage-grid">
+    <div class="usage-card">
+      <div class="usage-title">Liquid chlorine — avg gallons per month (your actual data)</div>
+      <div class="month-row"><span class="month-name">January</span><div class="month-track"><div class="month-bar" style="width:22%;background:var(--accent2)"></div></div><span class="month-val">0.33 gal</span></div>
+      <div class="month-row"><span class="month-name">February</span><div class="month-track"><div class="month-bar" style="width:31%;background:var(--accent2)"></div></div><span class="month-val">0.46 gal</span></div>
+      <div class="month-row"><span class="month-name">March</span><div class="month-track"><div class="month-bar" style="width:39%;background:var(--accent2)"></div></div><span class="month-val">0.58 gal</span></div>
+      <div class="month-row"><span class="month-name">April</span><div class="month-track"><div class="month-bar" style="width:50%;background:var(--accent2)"></div></div><span class="month-val">0.75 gal</span></div>
+      <div class="month-row"><span class="month-name">May</span><div class="month-track"><div class="month-bar" style="width:17%;background:var(--warn)"></div></div><span class="month-val">0.25 gal</span></div>
+      <div class="month-row"><span class="month-name">June</span><div class="month-track"><div class="month-bar" style="width:41%;background:var(--warn)"></div></div><span class="month-val">0.62 gal</span></div>
+      <div class="month-row"><span class="month-name">July</span><div class="month-track"><div class="month-bar" style="width:100%;background:var(--danger)"></div></div><span class="month-val">1.50 gal ⚡</span></div>
+      <div class="month-row"><span class="month-name">August</span><div class="month-track"><div class="month-bar" style="width:63%;background:var(--danger)"></div></div><span class="month-val">0.94 gal</span></div>
+      <div class="month-row"><span class="month-name">September</span><div class="month-track"><div class="month-bar" style="width:59%;background:var(--warn)"></div></div><span class="month-val">0.88 gal</span></div>
+      <div class="month-row"><span class="month-name">October</span><div class="month-track"><div class="month-bar" style="width:79%;background:var(--warn)"></div></div><span class="month-val">1.19 gal</span></div>
+      <div class="month-row"><span class="month-name">November</span><div class="month-track"><div class="month-bar" style="width:4%;background:var(--accent2)"></div></div><span class="month-val">0.06 gal</span></div>
+      <div class="month-row"><span class="month-name">December</span><div class="month-track"><div class="month-bar" style="width:47%;background:var(--accent2)"></div></div><span class="month-val">0.71 gal</span></div>
+      <div class="season-note">July peaks at 1.5 gal — 5× more than January. Stock up before summer. Your UV2 keeps winter demand very low.</div>
+    </div>
+    <div class="usage-card">
+      <div class="usage-title">Muriatic acid — seasonal averages per visit</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:1rem">
+        <div style="background:rgba(77,166,255,.06);border-radius:8px;padding:.85rem;text-align:center"><div style="font-size:1.5rem;font-weight:500;color:var(--accent2)">0.27 gal</div><div style="font-size:.68rem;color:var(--muted);margin-top:2px">Winter/visit</div></div>
+        <div style="background:rgba(0,201,167,.06);border-radius:8px;padding:.85rem;text-align:center"><div style="font-size:1.5rem;font-weight:500;color:var(--accent)">0.31 gal</div><div style="font-size:.68rem;color:var(--muted);margin-top:2px">Spring/visit</div></div>
+        <div style="background:rgba(255,209,102,.06);border-radius:8px;padding:.85rem;text-align:center"><div style="font-size:1.5rem;font-weight:500;color:var(--warn)">0.31 gal</div><div style="font-size:.68rem;color:var(--muted);margin-top:2px">Summer/visit</div></div>
+        <div style="background:rgba(255,107,107,.06);border-radius:8px;padding:.85rem;text-align:center"><div style="font-size:1.5rem;font-weight:500;color:var(--danger)">0.29 gal</div><div style="font-size:.68rem;color:var(--muted);margin-top:2px">Fall/visit</div></div>
+      </div>
+      <div class="season-note">Your pH is high year-round — acid usage is nearly constant at ~0.28–0.31 gal every visit regardless of season. Buy by the case.</div>
+      <div class="usage-title" style="margin-top:1.25rem">Trichlor tabs — usage pattern</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <div style="background:rgba(255,255,255,.03);border-radius:8px;padding:.75rem;text-align:center"><div style="font-size:1.4rem;font-weight:500;color:var(--danger)">2.59</div><div style="font-size:.68rem;color:var(--muted)">avg tabs/visit (summer)</div></div>
+        <div style="background:rgba(255,255,255,.03);border-radius:8px;padding:.75rem;text-align:center"><div style="font-size:1.4rem;font-weight:500;color:var(--accent2)">0</div><div style="font-size:.68rem;color:var(--muted)">tabs used Oct–Apr</div></div>
+      </div>
+      <div class="season-note" style="margin-top:.75rem">Tabs are strictly summer-only for your pool. Liquid + UV handles it in cooler months.</div>
+    </div>
+  </div>
+  <div class="info-bar">
+    <strong>Why your numbers are low:</strong> Your Paramount UV2 sanitizer (installed 5/26/2022) kills bacteria and breaks down chloramines directly, reducing how much liquid chlorine you need to add. Your Hayward inline chlorinator also provides steady background chlorination from tabs. Together they mean you're topping off, not fighting the pool. Don't second-guess the low numbers — they're accurate for your specific setup.
+  </div>
+</div>
+
+<!-- SUPPLIES -->
+<div id="panel-supplies" class="panel">
+  <table class="supply-table">
+    <thead><tr><th>Product</th><th style="min-width:90px">Qty/year</th><th>Est. annual</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><div class="sname">Liquid chlorine (10%)</div><div class="sdetail">~9 gal/year from YOUR data. UV2 + inline chlorinator keep demand low. Peak is July at ~1.5 gal/month.</div><a class="slink" href="https://www.amazon.com/s?k=liquid+chlorine+pool+10+gallon" target="_blank">→ Amazon</a> &nbsp;<a class="slink" href="https://lesliespool.com/" target="_blank">→ Leslie's</a></td>
+        <td><div style="font-weight:500">~9 gal</div><div class="sdetail">Buy locally</div></td>
+        <td class="scost"><div style="font-weight:500">~$36</div><div class="sdetail">~$4/gal</div></td>
+      </tr>
+      <tr>
+        <td><div class="sname">Muriatic acid (31.45%)</div><div class="sdetail">~15 gal/year. Your pH runs high year-round. Buy a 4-gallon case at Home Depot. Consistent need every visit.</div><a class="slink" href="https://www.amazon.com/s?k=muriatic+acid+pool+gallon" target="_blank">→ Amazon</a></td>
+        <td><div style="font-weight:500">~15 gal</div><div class="sdetail">4-pack cases</div></td>
+        <td class="scost"><div style="font-weight:500">~$60</div><div class="sdetail">~$4/gal</div></td>
+      </tr>
+      <tr>
+        <td><div class="sname">Trichlor tabs (3" stabilized)</div><div class="sdetail">Summer ONLY per your data — zero usage Oct–Apr. One 10 lb bucket covers the whole season.</div><a class="slink" href="https://www.amazon.com/s?k=trichlor+3+inch+pool+tabs+10lb" target="_blank">→ Amazon</a></td>
+        <td><div style="font-weight:500">~45 tabs</div><div class="sdetail">10 lb bucket</div></td>
+        <td class="scost"><div style="font-weight:500">~$50</div><div class="sdetail">per season</div></td>
+      </tr>
+      <tr>
+        <td><div class="sname">Baking soda / alkalinity up</div><div class="sdetail">~20 lbs/year. Critical for Pebble Tec — low alk etches the finish. Arm &amp; Hammer bulk = identical to pool store at 1/3 price.</div><a class="slink" href="https://www.amazon.com/s?k=arm+hammer+baking+soda+bulk" target="_blank">→ Amazon</a></td>
+        <td><div style="font-weight:500">~20 lbs</div><div class="sdetail">25 lb bag</div></td>
+        <td class="scost"><div style="font-weight:500">~$20</div></td>
+      </tr>
+      <tr>
+        <td><div class="sname">Scale inhibitor / stain preventer <span class="badge bs">Important</span></div><div class="sdetail">Your 600 ppm calcium hardness reading is very high. Scale inhibitor prevents white haze on Pebble Tec and the calcium ring at waterline. Dose monthly.</div><a class="slink" href="https://www.amazon.com/s?k=pool+scale+inhibitor+stain+preventer" target="_blank">→ Amazon</a></td>
+        <td><div style="font-weight:500">Monthly dose</div><div class="sdetail">1 qt bottle</div></td>
+        <td class="scost"><div style="font-weight:500">~$25</div></td>
+      </tr>
+      <tr>
+        <td><div class="sname">Mineral pack (algae prevention) <span class="badge bs">Seasonal</span></div><div class="sdetail">2× per year: April + October. Extra important for Pebble Tec's textured surface where algae gets a foothold. Don't skip.</div><a class="slink" href="https://www.amazon.com/s?k=pool+mineral+pack+algae+prevention+6+month" target="_blank">→ Amazon</a></td>
+        <td><div style="font-weight:500">2 packs/yr</div><div class="sdetail">Apr &amp; Oct</div></td>
+        <td class="scost"><div style="font-weight:500">~$70</div><div class="sdetail">$35/pack</div></td>
+      </tr>
+      <tr>
+        <td><div class="sname">Phosphate remover <span class="badge bo">As needed</span></div><div class="sdetail">~1×/year in fall per service history. Only if chlorine won't hold despite dosing. Test first.</div><a class="slink" href="https://www.amazon.com/s?k=pool+phosphate+remover+32oz" target="_blank">→ Amazon</a></td>
+        <td><div style="font-weight:500">~1×/year</div></td>
+        <td class="scost"><div style="font-weight:500">~$25</div></td>
+      </tr>
+      <tr>
+        <td><div class="sname">UV replacement lamp <span class="badge bs">Annual</span></div><div class="sdetail">Paramount UV2 — replace annually. Lamp loses effectiveness even when still lit. Installed May 2022. This is why your chlorine usage stays low.</div><a class="slink" href="https://www.amazon.com/s?k=Paramount+UV2+lamp+replacement+pool" target="_blank">→ Amazon</a></td>
+        <td><div style="font-weight:500">1×/year</div></td>
+        <td class="scost"><div style="font-weight:500">~$50</div></td>
+      </tr>
+      <tr style="background:rgba(0,201,167,.04)">
+        <td><div class="sname">Taylor K-2006 test kit <span class="badge bg">One-time</span></div><div class="sdetail">What the pros use. FAS-DPD chlorine test is far more accurate than strips or drops. Tests everything: chlorine, pH, alk, CYA, calcium hardness.</div><a class="slink" href="https://www.amazon.com/s?k=Taylor+K-2006+pool+test+kit" target="_blank">→ Amazon — Taylor K-2006</a></td>
+        <td><div style="font-weight:500">1× ever</div></td>
+        <td class="scost"><div style="font-weight:500">~$75</div><div class="sdetail">one-time</div></td>
+      </tr>
+      <tr style="background:rgba(0,201,167,.04)">
+        <td><div class="sname">Nylon pool brush (Pebble Tec safe) <span class="badge bg">One-time</span></div><div class="sdetail">Nylon ONLY for Pebble Tec. Weekly brushing is the #1 DIY thing for surface longevity. Never stainless steel for regular brushing.</div><a class="slink" href="https://www.amazon.com/s?k=nylon+pool+brush+pebble+tec" target="_blank">→ Amazon</a></td>
+        <td><div style="font-weight:500">1× ever</div></td>
+        <td class="scost"><div style="font-weight:500">~$20</div><div class="sdetail">one-time</div></td>
+      </tr>
+      <tr style="background:rgba(0,201,167,.04)">
+        <td><div class="sname">Trichlor floater <span class="badge bg">One-time</span></div><div class="sdetail">For 3" tabs in summer. Bridges chlorine losses between weekly doses.</div><a class="slink" href="https://www.amazon.com/s?k=3+inch+chlorine+tablet+floater" target="_blank">→ Amazon</a></td>
+        <td><div style="font-weight:500">1× ever</div></td>
+        <td class="scost"><div style="font-weight:500">~$15</div><div class="sdetail">one-time</div></td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="info-bar">
+    <strong>Buy locally:</strong> Liquid chlorine and muriatic acid are heavy — buy at Leslie's, Home Depot, or Walmart. Everything else ships cheaply from Amazon.
+    &nbsp;<a href="https://lesliespool.com/" target="_blank">Leslie's Pool Supply →</a>
+  </div>
+</div>
+
+<!-- EQUIPMENT -->
+<div id="panel-equipment" class="panel">
+  <div class="equip-grid">
+    <div class="equip-card">
+      <div class="equip-type">Main Pump</div>
+      <div class="equip-name">Jandy VS PLUS HP Variable Speed</div>
+      <div class="equip-model">Model: VSPIRP2700VS · Serial: CHEM03030123</div>
+      <div class="equip-detail">2.7 HP · 230V · 60 Hz · 10.5/16.0 amps</div>
+      <div class="equip-tip"><strong>Run at low speed</strong> (~1,200–1,500 RPM) for daily filtration — huge electricity savings. High speed only for vacuuming. Program via AquaLink.</div>
+      <a class="equip-link" href="https://www.jandy.com/en/products/pumps/variable-speed-pumps" target="_blank">→ Jandy Pump Support</a>
+    </div>
+    <div class="equip-card">
+      <div class="equip-type">Filter</div>
+      <div class="equip-name">Jandy Pro Series CL460</div>
+      <div class="equip-model">Model: CL460 · Serial: BH EI01 0300 3722 0902</div>
+      <div class="equip-detail">460 sq ft · 4 cartridges · Max 50 PSI<br>Flow: 150 gpm residential<br>Replacement: <strong style="color:var(--accent2)">Part # R0554600 (×4 required)</strong></div>
+      <div class="equip-tip"><strong>Clean when:</strong> pressure gauge is 8–10 psi above your clean baseline. Note that number the first time you clean. Rinse → soak overnight in filter cleaner → rinse. ~30 min. Saves $85/visit.</div>
+      <a class="equip-link" href="https://www.amazon.com/s?k=Jandy+R0554600+filter+cartridge" target="_blank">→ Buy Replacement Cartridges R0554600 on Amazon</a>
+    </div>
+    <div class="equip-card">
+      <div class="equip-type">Automation System</div>
+      <div class="equip-name">Jandy Pro Series AquaLink</div>
+      <div class="equip-model">18-Channel RF Transceiver · Model: 400121 / R0686300</div>
+      <div class="equip-detail">Controls pump speed, lighting, valves, and scheduling wirelessly.</div>
+      <div class="equip-tip"><strong>Set a schedule:</strong> Low-speed filtration 6–8 hrs/day (winter) or 10–12 hrs (summer). High-speed boost for vacuuming. This controls your Jandy VS PLUS HP and cuts electricity significantly.</div>
+      <a class="equip-link" href="https://www.jandy.com/en/products/controls/aqualink" target="_blank">→ AquaLink Support</a>
+    </div>
+    <div class="equip-card">
+      <div class="equip-type">UV Sanitizer ⚡</div>
+      <div class="equip-name">Paramount Ultra UV2</div>
+      <div class="equip-model">Part: 004422202600 · Installed: 5/26/2022</div>
+      <div class="equip-detail">240V · 2-lamp · S2-22 · 116W · Max 50 PSI</div>
+      <div class="equip-tip"><strong>This is why your chlorine usage is low.</strong> UV breaks down chloramines and kills bacteria, reducing liquid chlorine needs significantly. Replace lamps every 12 months — they lose effectiveness even if still lit. Due for service check now (2026).</div>
+      <a class="equip-link" href="https://www.amazon.com/s?k=Paramount+Ultra+UV2+lamp+replacement" target="_blank">→ Search UV Lamp Replacement</a>
+    </div>
+    <div class="equip-card">
+      <div class="equip-type">Booster Pump</div>
+      <div class="equip-name">Polaris PB450</div>
+      <div class="equip-model">Booster Pump</div>
+      <div class="equip-detail">Powers your pressure-side pool cleaner. Runs independently from the main Jandy pump.</div>
+      <div class="equip-tip"><strong>Only run when main pump is running.</strong> If your Polaris cleaner moves slowly, check PB450 pressure before assuming the cleaner needs repair. Keep inlet strainer clear.</div>
+      <a class="equip-link" href="https://www.amazon.com/s?k=Polaris+PB450+booster+pump+parts" target="_blank">→ PB450 Parts on Amazon</a>
+    </div>
+    <div class="equip-card">
+      <div class="equip-type">Inline Chlorinator</div>
+      <div class="equip-name">Hayward Powerclean Ultra VS</div>
+      <div class="equip-model">In-Line Chlorinator</div>
+      <div class="equip-detail">Provides steady background chlorination from trichlor tabs inline in your plumbing.</div>
+      <div class="equip-tip"><strong>Pebble Tec warning:</strong> Make sure plumbing has a bypass loop so concentrated chlorine doesn't contact the Pebble Tec surface when the pump is off — it will discolor and etch the finish. Per Pebble Tec: inline feeders must have looped plumbing on both sides.</div>
+    </div>
+  </div>
+  <div class="info-bar">
+    <strong>Your setup summary:</strong> Jandy VS pump + Jandy CL460 filter + AquaLink automation + Paramount UV2 sanitizer + Hayward inline chlorinator + Polaris PB450 booster. This is a well-equipped system. The UV2 + inline combo is why your chemical usage is lower than average.
+  </div>
+</div>
+
+<!-- PEBBLE TEC -->
+<div id="panel-pebbletec" class="panel active">
+  <div class="pt-warn">
+    <strong>⚠ Pebble Tec rules:</strong> Never use stainless steel brush for regular brushing. Never over-shock (fades color). Always keep alkalinity 80–120 ppm (low alk etches surface). Calcium hardness 200–400 ppm. Your Dec 2025 reading of 600 ppm is high — scale inhibitor is essential.
+  </div>
+  <div class="pt-grid">
+    <div class="pt-card">
+      <div class="pt-label">Weekly brushing</div>
+      <div class="pt-title">Nylon brush only — every week</div>
+      <div class="pt-text"><strong>Nylon bristle brush only</strong> — never stainless steel for regular use. Brush walls and floor toward the main drain weekly. The textured pebble surface traps dirt and algae spores in its crevices — weekly brushing prevents algae without extra chemicals. Start at the steps (most vulnerable area).</div>
+    </div>
+    <div class="pt-card">
+      <div class="pt-label">Your #1 threat: calcium scaling</div>
+      <div class="pt-title">600 ppm hardness is very high</div>
+      <div class="pt-text">Your Dec 2025 service note logged <strong>600 ppm total hardness</strong>. Target is 200–400 ppm. CA hard water + Pebble Tec + high evaporation = scaling risk. Use a <strong>scale inhibitor monthly</strong>. Without it you'll get the white calcium haze on the surface and the white ring at the waterline tile. This is your biggest maintenance risk.</div>
+    </div>
+    <div class="pt-card">
+      <div class="pt-label">Water chemistry (Pebble Tec specific)</div>
+      <div class="pt-title">Tighter targets than standard plaster</div>
+      <div class="pt-text">
+        <strong>Chlorine:</strong> 1–3 ppm (lower than standard to protect color)<br>
+        <strong>pH:</strong> 7.4–7.6 — yours runs 7.6–8.0, fix weekly<br>
+        <strong>Alkalinity:</strong> 80–120 ppm — low alk etches the finish<br>
+        <strong>Calcium hardness:</strong> 200–400 ppm<br>
+        <strong>CYA:</strong> 40–60 ppm — yours is 60–70, don't add more
+      </div>
+    </div>
+    <div class="pt-card">
+      <div class="pt-label">Acid wash schedule</div>
+      <div class="pt-title">Every 2–4 years — pro job</div>
+      <div class="pt-text">Drain and acid wash every <strong>2–4 years</strong> to remove calcium buildup, algae staining, and the white ring at the waterline. This is especially important in California with hard water. This is a professional job — not DIY. Budget <strong>~$400–600</strong> when the time comes.</div>
+    </div>
+    <div class="pt-card">
+      <div class="pt-label">Algae prevention</div>
+      <div class="pt-title">Pebble Tec needs more vigilance</div>
+      <div class="pt-text">The textured surface gives algae more surface area to grip vs smooth plaster. Your mineral pack (Apr + Oct) is <strong>critical</strong> — don't skip it. If you see green starting, brush immediately with a nylon brush and shock — but don't over-shock (fades the color). For active algae: a combo 50/50 nylon/stainless brush can be used to scrub problem areas only.</div>
+    </div>
+    <div class="pt-card">
+      <div class="pt-label">What damages Pebble Tec</div>
+      <div class="pt-title">Avoid these</div>
+      <div class="pt-text">
+        ❌ <strong>Stainless brush</strong> for regular use<br>
+        ❌ <strong>Over-shocking</strong> — fades the color<br>
+        ❌ <strong>Low alkalinity</strong> — etches the cement matrix<br>
+        ❌ <strong>Chlorine into skimmer</strong> — discolors floor around drains<br>
+        ❌ <strong>Concentrated chlorine sitting on surface</strong> when pump is off<br>
+        ❌ <strong>Ignoring phosphates</strong> — feeds algae in textured surface
+      </div>
+    </div>
+  </div>
+  <div class="info-bar">
+    <strong>Lifespan:</strong> With proper maintenance, Pebble Tec lasts <strong>20+ years</strong>. Main threats: poor chemistry (low alk + high calcium), over-shocking, and stainless steel brushes. Your mineral pack twice a year + weekly nylon brushing are the biggest DIY wins for longevity.
+    &nbsp;<a href="https://pebbletec.com/customer-support/pool-care-instructions/" target="_blank">Official Pebble Tec Care Guide →</a>
+  </div>
+</div>
+
+<!-- SAVINGS -->
+<div id="panel-savings" class="panel">
+  <div class="two-col">
+    <div class="s-card">
+      <div class="s-card-title">Current pro service</div>
+      <div class="s-row"><span style="color:var(--muted)">Monthly rate</span><span style="color:var(--danger);font-weight:500">$145</span></div>
+      <div class="s-row"><span style="color:var(--muted)">Annual service cost</span><span style="color:var(--danger);font-weight:500">$1,740</span></div>
+      <div style="margin-top:14px;font-size:.68rem;color:var(--muted);line-height:1.7">Add-on charges:<br>Phosphate treatment: <strong style="color:var(--text)">$65</strong><br>Filter cleaning: <strong style="color:var(--text)">$85</strong><br>Mineral pack (×2): <strong style="color:var(--text)">$125</strong></div>
+    </div>
+    <div class="s-card">
+      <div class="s-card-title">DIY annual cost (based on YOUR actual data)</div>
+      <div class="s-row"><span style="color:var(--muted)">Liquid chlorine (~9 gal)</span><span>~$36</span></div>
+      <div class="s-row"><span style="color:var(--muted)">Muriatic acid (~15 gal)</span><span>~$60</span></div>
+      <div class="s-row"><span style="color:var(--muted)">Trichlor tabs (summer)</span><span>~$50</span></div>
+      <div class="s-row"><span style="color:var(--muted)">Alkalinity up (bicarb)</span><span>~$20</span></div>
+      <div class="s-row"><span style="color:var(--muted)">Mineral packs ×2</span><span>~$70</span></div>
+      <div class="s-row"><span style="color:var(--muted)">Scale inhibitor (Pebble Tec)</span><span>~$25</span></div>
+      <div class="s-row"><span style="color:var(--muted)">UV lamp replacement</span><span>~$50</span></div>
+      <div class="s-row"><span style="color:var(--muted)">Phosphate remover</span><span>~$25</span></div>
+      <div class="s-row"><span style="color:var(--muted)">Misc</span><span>~$20</span></div>
+      <div class="s-total"><span>Total ongoing</span><span style="color:var(--accent)">~$356/yr</span></div>
+      <div style="font-size:.68rem;color:var(--muted);margin-top:6px">Year 1: add ~$110 one-time (test kit + brushes + floater) → ~$466</div>
+    </div>
+  </div>
+  <div class="savings-hl">
+    <div>
+      <div style="font-size:.75rem;color:var(--muted)">Annual savings</div>
+      <div class="sh-val">$1,384</div>
+      <div style="font-size:.72rem;color:var(--muted);margin-top:2px">$115/month · 80% cost reduction</div>
+      <div style="font-size:.7rem;color:var(--accent);margin-top:4px">UV2 keeps chemical cost well below average</div>
+    </div>
+    <div style="text-align:right">
+      <div style="font-size:.75rem;color:var(--muted);margin-bottom:4px">Add-on savings</div>
+      <div class="addon-row" style="color:var(--muted)"><span>Service</span><span>Pro</span><span>DIY</span><span>Save</span></div>
+      <div class="addon-row"><span>Phosphate</span><span style="color:var(--danger)">$65</span><span style="color:var(--accent)">$25</span><span style="color:var(--accent);font-weight:500">$40</span></div>
+      <div class="addon-row"><span>Filter clean</span><span style="color:var(--danger)">$85</span><span style="color:var(--accent)">$0</span><span style="color:var(--accent);font-weight:500">$85</span></div>
+      <div class="addon-row"><span>Mineral pack</span><span style="color:var(--danger)">$125</span><span style="color:var(--accent)">$70</span><span style="color:var(--accent);font-weight:500">$55</span></div>
+    </div>
+  </div>
+</div>
+
+</div><!-- end container -->
+
+<footer>
+  <div>Pool HQ · 71 service visits (Jul 2023–Mar 2026) · Pebble Tec · Jandy System</div>
+  <div>17,000 gal · Built with Eve 🤖</div>
+</footer>
+
+<script>
+function showTab(id,btn){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('panel-'+id).classList.add('active');
+  btn.classList.add('active');
+}
+</script>
+
+
+</body></html>
